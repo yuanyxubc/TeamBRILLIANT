@@ -12,7 +12,7 @@ public class TriggerMenu : MonoBehaviour
     [Tooltip("Right controller Primary Button (B button)")]
     public InputActionProperty bButtonAction;
 
-    private bool isMenuVisible = true;
+    private bool isMenuVisible = false;
 
     private void OnEnable()
     {
