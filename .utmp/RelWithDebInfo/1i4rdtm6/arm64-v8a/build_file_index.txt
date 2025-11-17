@@ -1,0 +1,2 @@
+D:\IMTC 505 Projects\Final Project\TeamBRILLIANT\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\IMTC 505 Projects\Final Project\TeamBRILLIANT\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
