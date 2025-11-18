@@ -100,11 +100,7 @@ public class CulturalOrb : MonoBehaviour
         proximityTrigger.isTrigger = true;
         proximityTrigger.radius = proximityRadius;
 
-        // Tag this object if not already tagged
-        if (gameObject.tag == "Untagged")
-        {
-            gameObject.tag = "CulturalOrb";
-        }
+        // Note: Tag is not needed - proximity detection uses trigger colliders
     }
 
     void OnTriggerEnter(Collider other)

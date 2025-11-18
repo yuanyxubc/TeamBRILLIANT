@@ -9,14 +9,17 @@ public class HarmonySceneManager : MonoBehaviour
     public static HarmonySceneManager Instance;
 
     [Header("Scene References")]
-    [Tooltip("Assign all 5 cultural orbs in the scene")]
-    public CulturalOrb[] culturalOrbs;
+    [Tooltip("Assign all 5 cultural orb PREFABS (from Project window)")]
+    public CulturalOrb[] culturalOrbPrefabs;
 
     [Tooltip("Spawn point transforms for each orb (should match orb count)")]
     public Transform[] spawnPoints;
 
     [Tooltip("Particle systems for sparkles at spawn points")]
     public ParticleSystem[] sparkleParticles;
+
+    // Runtime tracking of instantiated orbs
+    private CulturalOrb[] instantiatedOrbs;
 
     [Header("Scene Timing")]
     [Tooltip("Duration of Scene 1 before auto-transition")]
@@ -76,20 +79,23 @@ public class HarmonySceneManager : MonoBehaviour
 
     void ValidateSetup()
     {
-        if (culturalOrbs == null || culturalOrbs.Length == 0)
+        if (culturalOrbPrefabs == null || culturalOrbPrefabs.Length == 0)
         {
-            Debug.LogError("HarmonySceneManager: No cultural orbs assigned!");
+            Debug.LogError("HarmonySceneManager: No cultural orb prefabs assigned!");
         }
 
-        if (spawnPoints == null || spawnPoints.Length != culturalOrbs.Length)
+        if (spawnPoints == null || spawnPoints.Length != culturalOrbPrefabs.Length)
         {
-            Debug.LogWarning($"HarmonySceneManager: Spawn points count ({spawnPoints?.Length}) doesn't match orbs count ({culturalOrbs.Length})");
+            Debug.LogWarning($"HarmonySceneManager: Spawn points count ({spawnPoints?.Length}) doesn't match orbs count ({culturalOrbPrefabs.Length})");
         }
 
-        if (sparkleParticles == null || sparkleParticles.Length != culturalOrbs.Length)
+        if (sparkleParticles == null || sparkleParticles.Length != culturalOrbPrefabs.Length)
         {
-            Debug.LogWarning($"HarmonySceneManager: Sparkle particles count ({sparkleParticles?.Length}) doesn't match orbs count ({culturalOrbs.Length})");
+            Debug.LogWarning($"HarmonySceneManager: Sparkle particles count ({sparkleParticles?.Length}) doesn't match orbs count ({culturalOrbPrefabs.Length})");
         }
+
+        // Initialize array to track instantiated orbs
+        instantiatedOrbs = new CulturalOrb[culturalOrbPrefabs != null ? culturalOrbPrefabs.Length : 0];
     }
 
     #region Scene 1: The Courtyard Awakens
@@ -111,17 +117,8 @@ public class HarmonySceneManager : MonoBehaviour
             }
         }
 
-        // Hide all orbs
-        if (culturalOrbs != null)
-        {
-            foreach (var orb in culturalOrbs)
-            {
-                if (orb != null)
-                {
-                    orb.gameObject.SetActive(false);
-                }
-            }
-        }
+        // Note: Orbs are not instantiated yet in Scene 1
+        // They will be created in Scene 2 via InitializeScene2()
 
         // Show opening narration
         if (HarmonyUIManager.Instance != null)
@@ -161,13 +158,22 @@ public class HarmonySceneManager : MonoBehaviour
         }
 
         // Spawn orbs with staggered animation
-        if (culturalOrbs != null && spawnPoints != null)
+        if (culturalOrbPrefabs != null && spawnPoints != null)
         {
-            for (int i = 0; i < Mathf.Min(culturalOrbs.Length, spawnPoints.Length); i++)
+            for (int i = 0; i < Mathf.Min(culturalOrbPrefabs.Length, spawnPoints.Length); i++)
             {
-                if (culturalOrbs[i] != null && spawnPoints[i] != null)
+                if (culturalOrbPrefabs[i] != null && spawnPoints[i] != null)
                 {
-                    StartCoroutine(SpawnOrbAnimation(culturalOrbs[i], spawnPoints[i].position, i * orbSpawnStagger));
+                    // INSTANTIATE the prefab to create a clone in the scene
+                    CulturalOrb orbInstance = Instantiate(culturalOrbPrefabs[i], spawnPoints[i].position, Quaternion.identity);
+                    orbInstance.name = $"{culturalOrbPrefabs[i].data.cultureName}Orb"; // Clean name without "(Clone)"
+                    orbInstance.gameObject.SetActive(false); // Start hidden, will be activated in animation
+
+                    // Track the instantiated orb
+                    instantiatedOrbs[i] = orbInstance;
+
+                    // Animate the spawn
+                    StartCoroutine(SpawnOrbAnimation(orbInstance, spawnPoints[i].position, i * orbSpawnStagger));
                 }
             }
         }
@@ -277,13 +283,13 @@ public class HarmonySceneManager : MonoBehaviour
 
     Vector3 CalculateCenterPoint()
     {
-        if (culturalOrbs == null || culturalOrbs.Length == 0)
+        if (instantiatedOrbs == null || instantiatedOrbs.Length == 0)
             return Vector3.zero;
 
         Vector3 center = Vector3.zero;
         int count = 0;
 
-        foreach (var orb in culturalOrbs)
+        foreach (var orb in instantiatedOrbs)
         {
             if (orb != null && orb.gameObject.activeSelf)
             {
@@ -356,9 +362,9 @@ public class HarmonySceneManager : MonoBehaviour
         }
 
         // Animate orbs rising and fading
-        if (culturalOrbs != null)
+        if (instantiatedOrbs != null)
         {
-            foreach (var orb in culturalOrbs)
+            foreach (var orb in instantiatedOrbs)
             {
                 if (orb != null && orb.gameObject.activeSelf)
                 {
@@ -441,17 +447,18 @@ public class HarmonySceneManager : MonoBehaviour
     {
         Log("=== RESTARTING EXPERIENCE ===");
 
-        // Reset all orbs
-        if (culturalOrbs != null)
+        // Destroy all instantiated orbs
+        if (instantiatedOrbs != null)
         {
-            foreach (var orb in culturalOrbs)
+            foreach (var orb in instantiatedOrbs)
             {
                 if (orb != null)
                 {
-                    orb.gameObject.SetActive(false);
-                    orb.connectedOrbs.Clear();
+                    Destroy(orb.gameObject);
                 }
             }
+            // Clear the array
+            instantiatedOrbs = new CulturalOrb[culturalOrbPrefabs != null ? culturalOrbPrefabs.Length : 0];
         }
 
         // Clear all thread connections
