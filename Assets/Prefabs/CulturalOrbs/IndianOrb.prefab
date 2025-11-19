@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1459801657239580255, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 56356a70355105542ab2d948051d4190, type: 2}
+    - target: {fileID: 3602968086834552105, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 56356a70355105542ab2d948051d4190, type: 2}
     - target: {fileID: 3964275978024345134, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: m_Name
       value: IndianOrb
@@ -52,6 +60,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 7655658052507488040, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: innerSphere
+      value: 
+      objectReference: {fileID: 7749440496504906582}
+    - target: {fileID: 8035526658633664300, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 56356a70355105542ab2d948051d4190, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -107,3 +123,8 @@ MonoBehaviour:
   pulseScaleMultiplier: 0.3
   pulseDuration: 0.5
   connectedOrbs: []
+--- !u!4 &7749440496504906582 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 685759111755558413, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+  m_PrefabInstance: {fileID: 7066083311975583067}
+  m_PrefabAsset: {fileID: 0}

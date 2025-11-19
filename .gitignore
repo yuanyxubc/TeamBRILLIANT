@@ -28,6 +28,7 @@
 .idea/
 .vscode/
 .utmp/
+.claude/
 
 # Gradle cache directory
 .gradle/
