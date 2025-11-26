@@ -93,6 +93,12 @@ public class CulturalOrb : MonoBehaviour
         grabInteractable.hoverExited.AddListener(OnHoverExit);
     }
 
+    void Update()
+    {
+        // NOTE: We keep XRGrabInteractable enabled during Scene 3 for raycast detection
+        // Actual grab behavior is prevented in OnActivated() method
+    }
+
     void SetupProximityDetection()
     {
         // Add proximity trigger collider
@@ -143,6 +149,18 @@ public class CulturalOrb : MonoBehaviour
 
     void OnActivated(SelectEnterEventArgs args)
     {
+        // During Scene 3 (thread connection), prevent actual grabbing but keep interactable enabled for raycasts
+        if (HarmonySceneManager.Instance != null &&
+            HarmonySceneManager.Instance.CurrentState == SceneState.ConnectingThreads)
+        {
+            // Cancel the grab interaction
+            if (grabInteractable != null && grabInteractable.isSelected)
+            {
+                grabInteractable.interactionManager.CancelInteractableSelection((IXRSelectInteractable)grabInteractable);
+            }
+            return; // Don't process activation during Scene 3
+        }
+
         if (!isActivated)
         {
             isActivated = true;

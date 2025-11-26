@@ -43,8 +43,8 @@ public class ConnectionThread : MonoBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.useWorldSpace = true;
 
-        // Create material (using Sprites/Default shader which works with URP)
-        threadMaterial = new Material(Shader.Find("Sprites/Default"));
+        // Create material (using URP Unlit shader for Quest 2 compatibility)
+        threadMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         lineRenderer.material = threadMaterial;
 
         // Optional: Better visual quality

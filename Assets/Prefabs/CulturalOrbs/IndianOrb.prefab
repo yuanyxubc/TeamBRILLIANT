@@ -8,6 +8,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 130504110790161153, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 130504110790161153, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123296873241776567, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123296873241776567, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123296873241776567, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1459801657239580255, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -68,6 +88,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 56356a70355105542ab2d948051d4190, type: 2}
+    - target: {fileID: 8471130619974586362, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471130619974586362, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -75,6 +103,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3964275978024345134, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1182093534854601889}
+    - targetCorrespondingSourceObject: {fileID: 3964275978024345134, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -893640918386418277}
     - targetCorrespondingSourceObject: {fileID: 3964275978024345134, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5512009876735862905}
@@ -104,6 +135,27 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &-893640918386418277
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6128320103489442677}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5512009876735862905
 MonoBehaviour:

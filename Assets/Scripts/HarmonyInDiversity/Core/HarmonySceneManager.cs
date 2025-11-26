@@ -145,6 +145,9 @@ public class HarmonySceneManager : MonoBehaviour
         CurrentState = SceneState.VoicesRise;
         Log("=== SCENE 2: The Voices Rise ===");
 
+        // Re-enable Near-Far Interactors for grabbing orbs
+        EnableNearFarInteractors();
+
         // Stop sparkles
         if (sparkleParticles != null)
         {
@@ -237,8 +240,33 @@ public class HarmonySceneManager : MonoBehaviour
             HarmonyUIManager.Instance.ShowConnectionCounter(true);
         }
 
+        // CRITICAL: Disable Near-Far Interactor to prevent it from interfering with threading
+        DisableNearFarInteractors();
+
         // Thread system becomes active (handled by ThreadConnectionSystem.Update)
         // No auto-progression - waits for minimum connections
+    }
+
+    void DisableNearFarInteractors()
+    {
+        // Find all Near-Far Interactors in the scene and disable them
+        var nearFarInteractors = FindObjectsOfType<UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor>();
+        foreach (var interactor in nearFarInteractors)
+        {
+            interactor.enabled = false;
+            Debug.Log($"Disabled Near-Far Interactor: {interactor.gameObject.name}");
+        }
+    }
+
+    void EnableNearFarInteractors()
+    {
+        // Re-enable Near-Far Interactors for other scenes
+        var nearFarInteractors = FindObjectsOfType<UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor>(true); // Include inactive
+        foreach (var interactor in nearFarInteractors)
+        {
+            interactor.enabled = true;
+            Debug.Log($"Enabled Near-Far Interactor: {interactor.gameObject.name}");
+        }
     }
 
     #endregion
@@ -249,6 +277,9 @@ public class HarmonySceneManager : MonoBehaviour
     {
         CurrentState = SceneState.TapestryOfUnity;
         Log("=== SCENE 4: The Tapestry of Unity ===");
+
+        // Re-enable Near-Far Interactors (no longer need threading)
+        EnableNearFarInteractors();
 
         // Hide connection counter
         if (HarmonyUIManager.Instance != null)

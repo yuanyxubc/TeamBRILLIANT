@@ -15,7 +15,7 @@ public class ThreadConnectionSystem : MonoBehaviour
     public float threadWidth = 0.05f;
 
     [Tooltip("Distance for auto-snapping to target orb")]
-    public float snapDistance = 0.5f;
+    public float snapDistance = 1.5f; // Increased from 0.5f for easier connections
 
     [Tooltip("Maximum connections allowed per orb")]
     public int maxConnectionsPerOrb = 4;
@@ -104,18 +104,27 @@ public class ThreadConnectionSystem : MonoBehaviour
         if (HarmonySceneManager.Instance == null ||
             HarmonySceneManager.Instance.CurrentState != SceneState.ConnectingThreads)
         {
-            isActive = false;
+            if (isActive)
+            {
+                isActive = false;
+                Debug.Log("Thread Connection System is now INACTIVE");
+            }
             return;
         }
 
         if (!isActive)
         {
             isActive = true;
-            Debug.Log("Thread Connection System is now ACTIVE");
+            Debug.Log("=== Thread Connection System is now ACTIVE ===");
+            Debug.Log("In Unity Editor: Click and hold left mouse on orbs to create threads");
+            Debug.Log("On Quest 2: Point and hold trigger on orbs to create threads");
         }
 
         if (rayInteractor == null)
+        {
+            Debug.LogError("ThreadConnectionSystem: Ray Interactor is null!");
             return;
+        }
 
         HandleThreadPulling();
     }
@@ -133,14 +142,54 @@ public class ThreadConnectionSystem : MonoBehaviour
         // START pulling thread (on button press)
         if (selectJustPressed && !isPullingThread)
         {
-            // Check if raycast hits an orb
-            if (rayInteractor != null && rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+            Debug.Log("Trigger pressed - attempting to start thread pull");
+
+            CulturalOrb hitOrb = null;
+
+            #if UNITY_EDITOR
+            // In Editor: Use mouse raycast for testing
+            if (Camera.main != null)
             {
-                CulturalOrb orb = hit.collider.GetComponentInParent<CulturalOrb>();
-                if (orb != null)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit mouseHit, 100f))
                 {
-                    StartThreadPull(orb);
+                    Debug.Log($"Mouse Raycast hit: {mouseHit.collider.gameObject.name}");
+                    hitOrb = mouseHit.collider.GetComponentInParent<CulturalOrb>();
                 }
+                else
+                {
+                    Debug.LogWarning("Mouse raycast didn't hit anything");
+                }
+            }
+            #else
+            // In VR Build: Use Physics.Raycast from controller position/direction
+            if (rayInteractor != null)
+            {
+                Ray controllerRay = new Ray(rayInteractor.transform.position, rayInteractor.transform.forward);
+                if (Physics.Raycast(controllerRay, out RaycastHit vrHit, 100f))
+                {
+                    Debug.Log($"VR Physics Raycast hit: {vrHit.collider.gameObject.name} at distance {vrHit.distance:F2}m");
+                    hitOrb = vrHit.collider.GetComponentInParent<CulturalOrb>();
+
+                    if (hitOrb != null)
+                    {
+                        Debug.Log($"Found CulturalOrb: {hitOrb.data.cultureName}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"VR raycast from {rayInteractor.transform.position} forward {rayInteractor.transform.forward} didn't hit anything");
+                }
+            }
+            #endif
+
+            if (hitOrb != null)
+            {
+                StartThreadPull(hitOrb);
+            }
+            else if (hitOrb == null)
+            {
+                Debug.LogWarning("No orb found at raycast target");
             }
         }
 
@@ -148,10 +197,44 @@ public class ThreadConnectionSystem : MonoBehaviour
         if (isPullingThread && activeThreadBeam != null && sourceOrb != null)
         {
             Vector3 controllerPos = rayInteractor.transform.position;
-            UpdateThreadBeam(sourceOrb.transform.position, controllerPos);
+            Vector3 beamEndPoint = controllerPos;
+
+            #if UNITY_EDITOR
+            // In editor, use mouse raycast to get world position
+            if (Camera.main != null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit mouseHit, 100f))
+                {
+                    beamEndPoint = mouseHit.point;
+                }
+                else
+                {
+                    // If no hit, project mouse position forward from camera
+                    beamEndPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 5f));
+                }
+            }
+            #else
+            // In VR, project beam forward from controller
+            if (rayInteractor != null)
+            {
+                Ray controllerRay = new Ray(rayInteractor.transform.position, rayInteractor.transform.forward);
+                if (Physics.Raycast(controllerRay, out RaycastHit vrHit, 100f))
+                {
+                    beamEndPoint = vrHit.point;
+                }
+                else
+                {
+                    // If no hit, project forward 5 meters
+                    beamEndPoint = rayInteractor.transform.position + rayInteractor.transform.forward * 5f;
+                }
+            }
+            #endif
+
+            UpdateThreadBeam(sourceOrb.transform.position, beamEndPoint);
 
             // Check for nearby target orb for snapping visual
-            CulturalOrb targetOrb = FindNearbyOrb(controllerPos);
+            CulturalOrb targetOrb = FindNearbyOrb(beamEndPoint);
             if (targetOrb != null && targetOrb != sourceOrb)
             {
                 // Visual snap indicator - change beam color or add glow
@@ -172,29 +255,57 @@ public class ThreadConnectionSystem : MonoBehaviour
 
     bool GetSelectPressed()
     {
-        // Primary method: Use configured select action
-        if (selectAction.action != null)
-        {
-            return selectAction.action.IsPressed();
-        }
-
-        // Fallback 1: Try to read from interactor directly
-        if (rayInteractor != null)
-        {
-            // Check if interactor is actively selecting
-            if (rayInteractor.interactablesSelected.Count > 0 || rayInteractor.hasSelection)
-            {
-                return true;
-            }
-        }
-
-        // Fallback 2: Use old Input system as last resort (for testing in editor)
         #if UNITY_EDITOR
+        // In Editor: Prioritize mouse input for testing
         if (Input.GetMouseButton(0)) // Left mouse button
         {
             return true;
         }
         #endif
+
+        // VR Method 1: Use configured select action (if available)
+        if (selectAction.action != null && selectAction.action.IsPressed())
+        {
+            Debug.Log("Trigger detected via Select Action");
+            return true;
+        }
+
+        // VR Method 2: Direct XR Input - Read trigger from right controller
+        UnityEngine.XR.InputDevice rightController = UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.RightHand);
+        if (rightController.isValid)
+        {
+            float triggerValue;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out triggerValue))
+            {
+                if (triggerValue > 0.5f) // Trigger pressed beyond threshold
+                {
+                    Debug.Log($"Trigger detected via XR Input: {triggerValue:F2}");
+                    return true;
+                }
+            }
+
+            // Fallback: Check grip button
+            bool gripPressed;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripPressed))
+            {
+                if (gripPressed)
+                {
+                    Debug.Log("Grip button detected via XR Input");
+                    return true;
+                }
+            }
+        }
+
+        // VR Method 3: Try to read from interactor directly (unlikely to work for our case)
+        if (rayInteractor != null)
+        {
+            // Check if interactor is actively selecting
+            if (rayInteractor.interactablesSelected.Count > 0 || rayInteractor.hasSelection)
+            {
+                Debug.Log("Trigger detected via Ray Interactor selection");
+                return true;
+            }
+        }
 
         return false;
     }
@@ -204,7 +315,7 @@ public class ThreadConnectionSystem : MonoBehaviour
         sourceOrb = orb;
         isPullingThread = true;
 
-        Debug.Log($"Started pulling thread from {orb.data.cultureName} orb");
+        Debug.Log($"✓ Started pulling thread from {orb.data.cultureName} orb");
 
         // Create visual beam (temporary LineRenderer)
         GameObject beamObj = new GameObject("ThreadBeam_Temp");
@@ -216,8 +327,9 @@ public class ThreadConnectionSystem : MonoBehaviour
         activeThreadBeam.positionCount = 2;
         activeThreadBeam.useWorldSpace = true;
 
-        // Set material and color
-        Material beamMaterial = new Material(Shader.Find("Sprites/Default"));
+        // Set material and color - Use URP shader for Quest 2 compatibility
+        Material beamMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+        beamMaterial.color = sourceOrb.data.orbColor;
         activeThreadBeam.material = beamMaterial;
         activeThreadBeam.startColor = sourceOrb.data.orbColor;
         activeThreadBeam.endColor = sourceOrb.data.orbColor;
@@ -225,6 +337,8 @@ public class ThreadConnectionSystem : MonoBehaviour
         // Visual quality
         activeThreadBeam.numCapVertices = 5;
         activeThreadBeam.numCornerVertices = 5;
+
+        Debug.Log($"Thread beam created with color {sourceOrb.data.orbColor}");
     }
 
     void UpdateThreadBeam(Vector3 start, Vector3 end)
@@ -238,8 +352,36 @@ public class ThreadConnectionSystem : MonoBehaviour
 
     void CompleteThreadPull()
     {
-        Vector3 controllerPos = rayInteractor.transform.position;
-        CulturalOrb targetOrb = FindNearbyOrb(controllerPos);
+        Vector3 releasePoint = rayInteractor.transform.position;
+
+        #if UNITY_EDITOR
+        // In editor, use mouse position
+        if (Camera.main != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit mouseHit, 100f))
+            {
+                releasePoint = mouseHit.point;
+            }
+        }
+        #else
+        // In VR, use controller raycast point
+        if (rayInteractor != null)
+        {
+            Ray controllerRay = new Ray(rayInteractor.transform.position, rayInteractor.transform.forward);
+            if (Physics.Raycast(controllerRay, out RaycastHit vrHit, 100f))
+            {
+                releasePoint = vrHit.point;
+            }
+            else
+            {
+                // If no hit, use point 5 meters forward
+                releasePoint = rayInteractor.transform.position + rayInteractor.transform.forward * 5f;
+            }
+        }
+        #endif
+
+        CulturalOrb targetOrb = FindNearbyOrb(releasePoint);
 
         // Check if valid connection
         if (targetOrb != null && targetOrb != sourceOrb)
@@ -248,7 +390,14 @@ public class ThreadConnectionSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("No valid target orb found - connection cancelled");
+            if (targetOrb == null)
+            {
+                Debug.Log($"No orb within {snapDistance}m of release point - connection cancelled");
+            }
+            else if (targetOrb == sourceOrb)
+            {
+                Debug.Log("Cannot connect orb to itself - connection cancelled");
+            }
         }
 
         // Cleanup temporary beam
@@ -266,16 +415,29 @@ public class ThreadConnectionSystem : MonoBehaviour
         // Find all colliders within snap distance
         Collider[] colliders = Physics.OverlapSphere(position, snapDistance);
 
+        CulturalOrb closestOrb = null;
+        float closestDistance = float.MaxValue;
+
         foreach (var col in colliders)
         {
             CulturalOrb orb = col.GetComponentInParent<CulturalOrb>();
             if (orb != null)
             {
-                return orb;
+                float distance = Vector3.Distance(position, orb.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestOrb = orb;
+                }
             }
         }
 
-        return null;
+        if (closestOrb != null)
+        {
+            Debug.Log($"Found nearby orb: {closestOrb.data.cultureName} at distance {closestDistance:F2}m");
+        }
+
+        return closestOrb;
     }
 
     void CreateConnection(CulturalOrb orbA, CulturalOrb orbB)
