@@ -327,10 +327,33 @@ public class ThreadConnectionSystem : MonoBehaviour
         activeThreadBeam.positionCount = 2;
         activeThreadBeam.useWorldSpace = true;
 
-        // Set material and color - Use URP shader for Quest 2 compatibility
-        Material beamMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-        beamMaterial.color = sourceOrb.data.orbColor;
-        activeThreadBeam.material = beamMaterial;
+        // Set material and color - Use built-in shader that works on all platforms
+        Shader lineShader = Shader.Find("Unlit/Color");
+        if (lineShader == null)
+        {
+            // Fallback: Use Sprites/Default if Unlit/Color not found
+            lineShader = Shader.Find("Sprites/Default");
+            Debug.LogWarning("Unlit/Color shader not found, using Sprites/Default as fallback");
+        }
+        if (lineShader == null)
+        {
+            // Final fallback: Use Hidden/Internal-Colored
+            lineShader = Shader.Find("Hidden/Internal-Colored");
+            Debug.LogWarning("Sprites/Default shader not found, using Hidden/Internal-Colored as fallback");
+        }
+
+        if (lineShader != null)
+        {
+            Material beamMaterial = new Material(lineShader);
+            beamMaterial.color = sourceOrb.data.orbColor;
+            activeThreadBeam.material = beamMaterial;
+            Debug.Log($"Thread beam material created with shader: {lineShader.name}");
+        }
+        else
+        {
+            Debug.LogError("No suitable shader found for thread beam! Using default LineRenderer material.");
+        }
+
         activeThreadBeam.startColor = sourceOrb.data.orbColor;
         activeThreadBeam.endColor = sourceOrb.data.orbColor;
 

@@ -48,10 +48,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: fc226930e8fad4c499969204cecfbc05, type: 2}
+    - target: {fileID: 2377484896346416336, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3602968086834552105, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 56356a70355105542ab2d948051d4190, type: 2}
+    - target: {fileID: 3819254623013533542, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3964275978024345134, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: m_Name
       value: FrenchOrb
@@ -95,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 4023386872786599882, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762573666505894386, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7367523626796178559, guid: f497938cf6bcf7040aca0d3544420277, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

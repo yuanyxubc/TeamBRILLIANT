@@ -43,9 +43,26 @@ public class ConnectionThread : MonoBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.useWorldSpace = true;
 
-        // Create material (using URP Unlit shader for Quest 2 compatibility)
-        threadMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-        lineRenderer.material = threadMaterial;
+        // Create material (using built-in shader that works on all platforms)
+        Shader lineShader = Shader.Find("Unlit/Color");
+        if (lineShader == null)
+        {
+            lineShader = Shader.Find("Sprites/Default");
+        }
+        if (lineShader == null)
+        {
+            lineShader = Shader.Find("Hidden/Internal-Colored");
+        }
+
+        if (lineShader != null)
+        {
+            threadMaterial = new Material(lineShader);
+            lineRenderer.material = threadMaterial;
+        }
+        else
+        {
+            Debug.LogError("ConnectionThread: No suitable shader found for thread!");
+        }
 
         // Optional: Better visual quality
         lineRenderer.numCapVertices = 5;
