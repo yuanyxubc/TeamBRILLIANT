@@ -34,6 +34,10 @@ public class CulturalOrb : MonoBehaviour
     private XRGrabInteractable grabInteractable;
     private SphereCollider proximityTrigger;
 
+    // Audio components
+    private AudioSource greetingAudioSource;
+    private AudioSource humAudioSource;
+
     // State
     private float baseGlowIntensity = 1f;
     private float currentGlowIntensity = 1f;
@@ -72,6 +76,9 @@ public class CulturalOrb : MonoBehaviour
 
         // Setup proximity detection
         SetupProximityDetection();
+
+        // Setup audio
+        SetupAudio();
     }
 
     void SetupInteraction()
@@ -172,6 +179,9 @@ public class CulturalOrb : MonoBehaviour
                 HarmonyUIManager.Instance.ShowCultureInfo(data.cultureName, data.greetingText);
             }
 
+            // Play greeting audio
+            PlayGreeting();
+
             // Haptic feedback
             SendHapticFeedback(args.interactorObject, 0.5f, 0.2f);
         }
@@ -233,6 +243,116 @@ public class CulturalOrb : MonoBehaviour
     {
         return connectedOrbs.Contains(otherOrb);
     }
+
+    #region Audio Setup and Control
+
+    void SetupAudio()
+    {
+        if (data == null) return;
+
+        // Create greeting audio source (one-shot, 3D spatial)
+        GameObject greetingObj = new GameObject("GreetingAudio");
+        greetingObj.transform.SetParent(transform);
+        greetingObj.transform.localPosition = Vector3.zero;
+        greetingAudioSource = greetingObj.AddComponent<AudioSource>();
+        greetingAudioSource.playOnAwake = false;
+        greetingAudioSource.loop = false;
+        greetingAudioSource.clip = data.greetingAudio;
+        greetingAudioSource.volume = data.greetingVolume;
+
+        // Configure spatial audio for greeting
+        if (HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.ConfigureSpatialAudio(greetingAudioSource);
+        }
+
+        // Assign to Orb mixer group
+        if (HarmonyAudioManager.Instance != null && HarmonyAudioManager.Instance.audioMixer != null)
+        {
+            var orbGroup = HarmonyAudioManager.Instance.audioMixer.FindMatchingGroups("Orbs");
+            if (orbGroup.Length > 0)
+            {
+                greetingAudioSource.outputAudioMixerGroup = orbGroup[0];
+            }
+        }
+
+        // Create cultural hum audio source (looping, 3D spatial)
+        GameObject humObj = new GameObject("CulturalHumAudio");
+        humObj.transform.SetParent(transform);
+        humObj.transform.localPosition = Vector3.zero;
+        humAudioSource = humObj.AddComponent<AudioSource>();
+        humAudioSource.playOnAwake = false;
+        humAudioSource.loop = true;
+        humAudioSource.clip = data.culturalHum;
+        humAudioSource.volume = data.humVolume;
+
+        // Configure spatial audio for hum
+        if (HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.ConfigureSpatialAudio(humAudioSource);
+        }
+
+        // Assign to Orb mixer group
+        if (HarmonyAudioManager.Instance != null && HarmonyAudioManager.Instance.audioMixer != null)
+        {
+            var orbGroup = HarmonyAudioManager.Instance.audioMixer.FindMatchingGroups("Orbs");
+            if (orbGroup.Length > 0)
+            {
+                humAudioSource.outputAudioMixerGroup = orbGroup[0];
+            }
+        }
+
+        // Start playing cultural hum in Scene 2 (after orb spawns)
+        if (HarmonySceneManager.Instance != null &&
+            HarmonySceneManager.Instance.CurrentState == SceneState.VoicesRise)
+        {
+            StartCulturalHum();
+        }
+    }
+
+    public void StartCulturalHum()
+    {
+        if (humAudioSource != null && data != null && data.culturalHum != null)
+        {
+            humAudioSource.Play();
+            Debug.Log($"{data.cultureName} orb: Cultural hum started");
+        }
+    }
+
+    public void StopCulturalHum(float fadeOutDuration = 1f)
+    {
+        if (humAudioSource != null && humAudioSource.isPlaying)
+        {
+            StartCoroutine(FadeOutHum(fadeOutDuration));
+        }
+    }
+
+    IEnumerator FadeOutHum(float duration)
+    {
+        float startVolume = humAudioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            humAudioSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        humAudioSource.Stop();
+        humAudioSource.volume = startVolume;
+    }
+
+    public void PlayGreeting()
+    {
+        if (greetingAudioSource != null && data != null && data.greetingAudio != null)
+        {
+            greetingAudioSource.Play();
+            Debug.Log($"{data.cultureName} orb: Playing greeting");
+        }
+    }
+
+    #endregion
 
     void OnDestroy()
     {

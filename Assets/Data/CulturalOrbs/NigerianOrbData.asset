@@ -15,4 +15,8 @@ MonoBehaviour:
   cultureName: Nigerian
   greetingText: Sannu
   orbColor: {r: 0.5019608, g: 0, b: 0.5019608, a: 1}
-  orbPrefab: {fileID: 0}
+  orbPrefab: {fileID: 4771930271378460404, guid: 742ef82c49631c14ab6161c10c04f155, type: 3}
+  greetingAudio: {fileID: 8300000, guid: 6fb213bca69f52d44814af4c4a52c8fd, type: 3}
+  culturalHum: {fileID: 8300000, guid: dc33f977c6f255d409ca66116b0ed6d8, type: 3}
+  greetingVolume: 1
+  humVolume: 0.7

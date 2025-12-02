@@ -15,4 +15,8 @@ MonoBehaviour:
   cultureName: Indian
   greetingText: Namaste
   orbColor: {r: 0, g: 1, b: 0, a: 1}
-  orbPrefab: {fileID: 0}
+  orbPrefab: {fileID: 6128320103489442677, guid: 435eeeee249e9164c910a4b8d26e77ea, type: 3}
+  greetingAudio: {fileID: 8300000, guid: ce5ab742284d4f043a396670b637a49a, type: 3}
+  culturalHum: {fileID: 8300000, guid: dc33f977c6f255d409ca66116b0ed6d8, type: 3}
+  greetingVolume: 1
+  humVolume: 0.7

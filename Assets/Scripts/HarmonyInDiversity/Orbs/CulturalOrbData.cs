@@ -20,4 +20,19 @@ public class CulturalOrbData : ScriptableObject
 
     [Tooltip("Optional: Reference to the orb prefab variant")]
     public GameObject orbPrefab;
+
+    [Header("Audio Properties")]
+    [Tooltip("Recorded greeting audio (e.g., 'Konnichiwa' for Japanese)")]
+    public AudioClip greetingAudio;
+
+    [Tooltip("Cultural ambient hum/music that loops continuously")]
+    public AudioClip culturalHum;
+
+    [Tooltip("Volume multiplier for greeting audio (0-1)")]
+    [Range(0f, 1f)]
+    public float greetingVolume = 1f;
+
+    [Tooltip("Volume multiplier for cultural hum (0-1)")]
+    [Range(0f, 1f)]
+    public float humVolume = 0.7f;
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d593c3ac79718240938468dd151da80, type: 3}
+  m_Name: HarmonyNarration
+  m_EditorClassIdentifier: Assembly-CSharp::NarrationData
+  scene1Opening: {fileID: 8300000, guid: bfa3861cb7edda54699f3040061e53a8, type: 3}
+  scene1Delay: 2
+  scene2Opening: {fileID: 8300000, guid: c9030cd1e52d80443ad2bbbd4bf3773e, type: 3}
+  scene2Delay: 2
+  scene3Opening: {fileID: 8300000, guid: 6637d38fbace1674f9412626683508d0, type: 3}
+  scene3Delay: 2
+  scene4Opening: {fileID: 8300000, guid: 30d8a87c0c979894cb475ae3693109c3, type: 3}
+  scene4Delay: 2
+  scene5Closing: {fileID: 8300000, guid: 733df522509a6644491f7fc2d0704912, type: 3}
+  scene5Delay: 2
+  scene3Guidance: {fileID: 0}

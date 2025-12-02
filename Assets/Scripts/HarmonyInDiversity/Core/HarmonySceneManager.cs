@@ -21,6 +21,10 @@ public class HarmonySceneManager : MonoBehaviour
     // Runtime tracking of instantiated orbs
     private CulturalOrb[] instantiatedOrbs;
 
+    [Header("Narration")]
+    [Tooltip("Narration data containing all voice-over clips")]
+    public NarrationData narrationData;
+
     [Header("Scene Timing")]
     [Tooltip("Duration of Scene 1 before auto-transition")]
     public float scene1Duration = 10f;
@@ -120,10 +124,16 @@ public class HarmonySceneManager : MonoBehaviour
         // Note: Orbs are not instantiated yet in Scene 1
         // They will be created in Scene 2 via InitializeScene2()
 
-        // Show opening narration
+        // Show opening narration (text)
         if (HarmonyUIManager.Instance != null)
         {
             HarmonyUIManager.Instance.ShowNarration("Every culture is a light, waiting to be seen...", 5f);
+        }
+
+        // Play narration audio
+        if (narrationData != null && narrationData.scene1Opening != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlayNarration(narrationData.scene1Opening, narrationData.scene1Delay);
         }
 
         // Auto-progress to Scene 2
@@ -181,10 +191,16 @@ public class HarmonySceneManager : MonoBehaviour
             }
         }
 
-        // Show narration
+        // Show narration (text)
         if (HarmonyUIManager.Instance != null)
         {
             HarmonyUIManager.Instance.ShowNarration("The voices of many cultures rise...", 5f);
+        }
+
+        // Play narration audio
+        if (narrationData != null && narrationData.scene2Opening != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlayNarration(narrationData.scene2Opening, narrationData.scene2Delay);
         }
 
         // Auto-progress to Scene 3
@@ -233,11 +249,17 @@ public class HarmonySceneManager : MonoBehaviour
         CurrentState = SceneState.ConnectingThreads;
         Log("=== SCENE 3: Connecting the Threads ===");
 
-        // Show narration
+        // Show narration (text)
         if (HarmonyUIManager.Instance != null)
         {
             HarmonyUIManager.Instance.ShowNarration("Connect the threads of culture...", 5f);
             HarmonyUIManager.Instance.ShowConnectionCounter(true);
+        }
+
+        // Play narration audio
+        if (narrationData != null && narrationData.scene3Opening != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlayNarration(narrationData.scene3Opening, narrationData.scene3Delay);
         }
 
         // CRITICAL: Disable Near-Far Interactor to prevent it from interfering with threading
@@ -286,6 +308,12 @@ public class HarmonySceneManager : MonoBehaviour
         {
             HarmonyUIManager.Instance.ShowConnectionCounter(false);
             HarmonyUIManager.Instance.ShowNarration("A tapestry of unity emerges...", 5f);
+        }
+
+        // Play narration audio
+        if (narrationData != null && narrationData.scene4Opening != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlayNarration(narrationData.scene4Opening, narrationData.scene4Delay);
         }
 
         // Calculate center point for canopy
@@ -386,10 +414,16 @@ public class HarmonySceneManager : MonoBehaviour
         CurrentState = SceneState.Reflection;
         Log("=== SCENE 5: Reflection Beneath the Light ===");
 
-        // Show closing narration
+        // Show closing narration (text)
         if (HarmonyUIManager.Instance != null)
         {
             HarmonyUIManager.Instance.ShowNarration("Together, we weave the colors of humanity...", 7f);
+        }
+
+        // Play closing narration audio
+        if (narrationData != null && narrationData.scene5Closing != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlayNarration(narrationData.scene5Closing, narrationData.scene5Delay);
         }
 
         // Animate orbs rising and fading

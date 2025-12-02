@@ -35,12 +35,27 @@ public class ThreadConnectionSystem : MonoBehaviour
     [Tooltip("Particle effect to spawn on successful connection")]
     public GameObject connectionBurstPrefab;
 
+    [Header("Audio (Optional)")]
+    [Tooltip("Sound when starting to pull a thread from an orb")]
+    public AudioClip threadPullStartSound;
+
+    [Tooltip("Sound when thread snaps to target orb")]
+    public AudioClip threadSnapSound;
+
+    [Tooltip("Sound when connection is successfully created")]
+    public AudioClip connectionSuccessSound;
+
+    [Tooltip("Volume for thread SFX (0-1)")]
+    [Range(0f, 1f)]
+    public float sfxVolume = 0.8f;
+
     // State
     private CulturalOrb sourceOrb;
     private LineRenderer activeThreadBeam;
     private List<ConnectionThread> connections = new List<ConnectionThread>();
     private bool isPullingThread = false;
     private bool wasSelectPressed = false;
+    private CulturalOrb lastSnapTarget = null; // Track last orb we snapped to
 
     // UI reference
     private bool isActive = false;
@@ -239,10 +254,18 @@ public class ThreadConnectionSystem : MonoBehaviour
             {
                 // Visual snap indicator - change beam color or add glow
                 activeThreadBeam.endColor = targetOrb.data.orbColor;
+
+                // Play snap sound when entering snap range (only once per target)
+                if (lastSnapTarget != targetOrb && threadSnapSound != null && HarmonyAudioManager.Instance != null)
+                {
+                    HarmonyAudioManager.Instance.PlaySFX(threadSnapSound, sfxVolume * 0.6f); // Slightly quieter
+                    lastSnapTarget = targetOrb;
+                }
             }
             else
             {
                 activeThreadBeam.endColor = sourceOrb.data.orbColor;
+                lastSnapTarget = null; // Reset when not snapping to anything
             }
         }
 
@@ -316,6 +339,12 @@ public class ThreadConnectionSystem : MonoBehaviour
         isPullingThread = true;
 
         Debug.Log($"✓ Started pulling thread from {orb.data.cultureName} orb");
+
+        // Play thread pull start sound
+        if (threadPullStartSound != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlaySFX(threadPullStartSound, sfxVolume);
+        }
 
         // Create visual beam (temporary LineRenderer)
         GameObject beamObj = new GameObject("ThreadBeam_Temp");
@@ -431,6 +460,7 @@ public class ThreadConnectionSystem : MonoBehaviour
 
         isPullingThread = false;
         sourceOrb = null;
+        lastSnapTarget = null; // Reset snap target
     }
 
     CulturalOrb FindNearbyOrb(Vector3 position)
@@ -496,6 +526,12 @@ public class ThreadConnectionSystem : MonoBehaviour
         orbB.AddConnection(orbA);
 
         Debug.Log($"✓ Created connection between {orbA.data.cultureName} and {orbB.data.cultureName} ({connections.Count} total)");
+
+        // Play connection success sound
+        if (connectionSuccessSound != null && HarmonyAudioManager.Instance != null)
+        {
+            HarmonyAudioManager.Instance.PlaySFX(connectionSuccessSound, sfxVolume);
+        }
 
         // Visual feedback - particle burst
         CreateConnectionBurst(orbA.transform.position, orbB.transform.position);
