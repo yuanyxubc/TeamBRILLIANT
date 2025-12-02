@@ -414,6 +414,9 @@ public class HarmonySceneManager : MonoBehaviour
         CurrentState = SceneState.Reflection;
         Log("=== SCENE 5: Reflection Beneath the Light ===");
 
+        // Re-enable Near-Far Interactors for UI interaction
+        EnableNearFarInteractors();
+
         // Show closing narration (text)
         if (HarmonyUIManager.Instance != null)
         {
