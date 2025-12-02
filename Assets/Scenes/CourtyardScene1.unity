@@ -681,10 +681,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db99d55960c267d48903fb57705f3e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThreadConnectionSystem
-  threadWidth: 0.3
+  threadWidth: 0.1
   snapDistance: 2.3
-  maxConnectionsPerOrb: 4
-  minimumConnectionsForCompletion: 4
+  maxConnectionsPerOrb: 5
+  minimumConnectionsForCompletion: 2
   rayInteractor: {fileID: 2060835512}
   selectAction:
     m_UseReference: 0
