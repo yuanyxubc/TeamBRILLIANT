@@ -187,7 +187,7 @@ public class CulturalOrb : MonoBehaviour
         }
     }
 
-    void TriggerPulseEffect()
+    public void TriggerPulseEffect()
     {
         StartCoroutine(PulseAnimation());
     }

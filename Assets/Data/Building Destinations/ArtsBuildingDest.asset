@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8be14b475095a4bb5f3499dc89b926, type: 3}
+  m_Name: ArtsBuildingDest
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingDestination
+  buildingName: Arts Building
+  buildingCode: ART
+  buildingMarkerName: Building_Arts
+  buildingTransform: {fileID: 0}
+  assignedOrb: {fileID: 11400000, guid: ee9ffacb4aba8664094b8fb06e51fff6, type: 2}
+  facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  facultyName: Faculty of Arts
+  facultyTitle: Professor
+  facultyDepartment: Creative Studies
+  facultyBio: Nigerian Biography
+  culturalConnection: Nigerian Connection
+  facultyVoiceClip: {fileID: 0}

@@ -237,7 +237,30 @@ public class HarmonySceneManager : MonoBehaviour
     IEnumerator AutoProgressToScene3()
     {
         yield return new WaitForSeconds(scene2Duration);
-        TransitionToState(SceneState.ConnectingThreads);
+        TransitionToState(SceneState.CampusExploration); // CHANGED: Now goes to Scene 2.5 first
+    }
+
+    #endregion
+
+    #region Scene 2.5: Campus Exploration
+
+    void InitializeScene2_5()
+    {
+        CurrentState = SceneState.CampusExploration;
+        Log("=== SCENE 2.5: Campus Exploration ===");
+
+        // Initialize Campus Exploration Manager
+        if (CampusExplorationManager.Instance != null)
+        {
+            CampusExplorationManager.Instance.InitializeScene();
+        }
+        else
+        {
+            Debug.LogError("CampusExplorationManager not found in scene! Please add it to the scene.");
+        }
+
+        // No auto-progression - waits for all orbs to be discovered and returned
+        // CampusExplorationManager will call TransitionToState(SceneState.ConnectingThreads) when done
     }
 
     #endregion
@@ -499,6 +522,9 @@ public class HarmonySceneManager : MonoBehaviour
             case SceneState.VoicesRise:
                 InitializeScene2();
                 break;
+            case SceneState.CampusExploration:
+                InitializeScene2_5();
+                break;
             case SceneState.ConnectingThreads:
                 InitializeScene3();
                 break;
@@ -533,6 +559,12 @@ public class HarmonySceneManager : MonoBehaviour
         if (ThreadConnectionSystem.Instance != null)
         {
             ThreadConnectionSystem.Instance.ClearAllConnections();
+        }
+
+        // Clean up Campus Exploration scene
+        if (CampusExplorationManager.Instance != null)
+        {
+            CampusExplorationManager.Instance.CleanupScene();
         }
 
         // Restart from Scene 1
