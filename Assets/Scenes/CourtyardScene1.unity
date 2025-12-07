@@ -348,7 +348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &119747117
 RectTransform:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -510,7 +510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -120}
+  m_AnchoredPosition: {x: 0, y: -170}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184675465
@@ -929,10 +929,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CampusExplorationManager
   buildingDestinations:
-  - {fileID: 11400000, guid: af31999747e00214d9d08bee37af4b72, type: 2}
-  - {fileID: 11400000, guid: 732cda10b13eaef4bb2d2a748d7ca948, type: 2}
-  - {fileID: 11400000, guid: e6226f9e842dc7c4fbf44aaaee34ad07, type: 2}
   - {fileID: 11400000, guid: 14402035a7aba37409ef74081783668e, type: 2}
+  - {fileID: 11400000, guid: 732cda10b13eaef4bb2d2a748d7ca948, type: 2}
+  - {fileID: 11400000, guid: af31999747e00214d9d08bee37af4b72, type: 2}
+  - {fileID: 11400000, guid: e6226f9e842dc7c4fbf44aaaee34ad07, type: 2}
   - {fileID: 11400000, guid: f9597b8e21de99b49bb38b0a111dc2dc, type: 2}
   discoveryRadius: 2
   bioDisplayDuration: 15
@@ -16600,7 +16600,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -70}
-  m_SizeDelta: {x: 150, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &874590119
 MonoBehaviour:
@@ -22092,7 +22092,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 60}
-  m_SizeDelta: {x: 300, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1042532419
 MonoBehaviour:
@@ -22141,8 +22141,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -23317,7 +23317,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 5}
-  m_SizeDelta: {x: 300, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1526057735
 MonoBehaviour:
@@ -23366,8 +23366,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

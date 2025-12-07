@@ -18,9 +18,11 @@ MonoBehaviour:
   buildingTransform: {fileID: 0}
   assignedOrb: {fileID: 11400000, guid: ee9ffacb4aba8664094b8fb06e51fff6, type: 2}
   facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  facultyName: Faculty of Arts
-  facultyTitle: Professor
-  facultyDepartment: Creative Studies
-  facultyBio: Nigerian Biography
-  culturalConnection: Nigerian Connection
+  facultyName: Sakiru Adebayo
+  facultyTitle: Assistant Professor
+  facultyDepartment: English and Cultural Studies
+  facultyBio: He worked as a postdoctoral fellow at the Wits Institute of Social
+    and Economic Research (WISER) for a year.
+  culturalConnection: He was born in Ijebu Igbo, Nigeria, studied at the University
+    of Ibadan and later moved to Johannesburg before joining UBCO
   facultyVoiceClip: {fileID: 0}

@@ -18,9 +18,10 @@ MonoBehaviour:
   buildingTransform: {fileID: 0}
   assignedOrb: {fileID: 11400000, guid: 202469ddb2ae4a1468d63de3a3da94e0, type: 2}
   facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  facultyName: Adminstration
-  facultyTitle: Adminstrator
-  facultyDepartment: Department
-  facultyBio: 'Mexican Biography '
-  culturalConnection: Mexican Connection
+  facultyName: "Bernard Schulz\u2011Cruz"
+  facultyTitle: Associate Professor
+  facultyDepartment: Spanish Department
+  facultyBio: Lecturer emeritus in Spanish and film studies.
+  culturalConnection: A Spanish instructor whose courses include Mexican cinema and
+    literature; his work promotes Mexican culture at UBCO.
   facultyVoiceClip: {fileID: 0}

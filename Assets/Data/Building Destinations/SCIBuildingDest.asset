@@ -18,9 +18,11 @@ MonoBehaviour:
   buildingTransform: {fileID: 0}
   assignedOrb: {fileID: 11400000, guid: 3047f3ea3fb545945a853761d6161e8f, type: 2}
   facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  facultyName: Faculty of Sciences
+  facultyName: Yves Lucet
   facultyTitle: Professor
-  facultyDepartment: Department
-  facultyBio: French Biography
-  culturalConnection: French Cultural
+  facultyDepartment: Computer Science
+  facultyBio: He is now a professor of computer science whose research centers on
+    computational convex analysis and optimization.
+  culturalConnection: "Received his PhD in convex analysis and optimization in 1997
+    from Universit\xE9 de Toulouse III, France."
   facultyVoiceClip: {fileID: 0}

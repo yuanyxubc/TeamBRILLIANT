@@ -16,11 +16,12 @@ MonoBehaviour:
   buildingCode: LIB
   buildingMarkerName: Building_Library
   buildingTransform: {fileID: 0}
-  assignedOrb: {fileID: 11400000, guid: ee9ffacb4aba8664094b8fb06e51fff6, type: 2}
+  assignedOrb: {fileID: 11400000, guid: 18cea1d5a19eb014e8530c94d32a5b0c, type: 2}
   facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  facultyName: Library
-  facultyTitle: Librarian
-  facultyDepartment: Library Frontdesk
-  facultyBio: Nigerian Biography
-  culturalConnection: Nigerian Cultural
+  facultyName: Mayu Takasaki
+  facultyTitle: Lecturer
+  facultyDepartment: Languages and World Studies
+  facultyBio: Lecturer in Japanese Studies in the Department of Languages and World
+    Literatures
+  culturalConnection: Japanese Studies lecturer and Japanese Student Advisor
   facultyVoiceClip: {fileID: 0}

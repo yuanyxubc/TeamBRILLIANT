@@ -18,9 +18,12 @@ MonoBehaviour:
   buildingTransform: {fileID: 0}
   assignedOrb: {fileID: 11400000, guid: e9f48780c6a46904098f2ccd79656a4a, type: 2}
   facultyPhoto: {fileID: 921062424029211809, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  facultyName: Faculty of Engineering
-  facultyTitle: Professor
-  facultyDepartment: Electronics
-  facultyBio: Indian Biography
-  culturalConnection: Indian connection
+  facultyName: Vikas Menghwani
+  facultyTitle: Assistant professor of teaching
+  facultyDepartment: Mechanical Engineering
+  facultyBio: He develops labs and teaching materials for sustainability and thermal
+    sciences.
+  culturalConnection: "He completed his M.Tech and B.Tech in Mechanical Engineering
+    at IIT Madras and worked on renewable\u2011energy projects acrossIndia before
+    joining UBCO."
   facultyVoiceClip: {fileID: 0}
