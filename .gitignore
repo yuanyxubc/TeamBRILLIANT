@@ -30,8 +30,8 @@
 .utmp/
 .claude/
 
-*.txt
-*.md
+# *.txt
+# *.md
 
 # Gradle cache directory
 .gradle/
