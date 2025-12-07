@@ -929,11 +929,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CampusExplorationManager
   buildingDestinations:
-  - {fileID: 11400000, guid: 14402035a7aba37409ef74081783668e, type: 2}
   - {fileID: 11400000, guid: 732cda10b13eaef4bb2d2a748d7ca948, type: 2}
+  - {fileID: 11400000, guid: 14402035a7aba37409ef74081783668e, type: 2}
   - {fileID: 11400000, guid: af31999747e00214d9d08bee37af4b72, type: 2}
-  - {fileID: 11400000, guid: e6226f9e842dc7c4fbf44aaaee34ad07, type: 2}
   - {fileID: 11400000, guid: f9597b8e21de99b49bb38b0a111dc2dc, type: 2}
+  - {fileID: 11400000, guid: e6226f9e842dc7c4fbf44aaaee34ad07, type: 2}
   discoveryRadius: 2
   bioDisplayDuration: 15
   playerTransform: {fileID: 0}
